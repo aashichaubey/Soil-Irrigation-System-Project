@@ -1,28 +1,92 @@
-# Soil-Irrigation-System
-Creating an automatic plant watering system using STM32 Microcontrollers to detect soil moisture. 
+# STM32 Smart Irrigation and Reservoir Control System
 
-The irrigation system will monitor soil moisture levels using two STM-32 microcontrollers and sensors to control the water pump to ensure optimal watering based on soil moisture content and environmental factors. The system will have sensors, controllers, and status indicators to automate irrigation. 
+An embedded irrigation system built with STM32 microcontrollers to monitor water conditions, control a pump, and automate water distribution.
 
-Microcontroller #1 will continuously monitor the soil moisture levels via the soil moisture sensor. Once the moisture levels falls below its predefined threshold, the microcontroller will send a signal to controller #2 to turn off a white LED continuously for a maximum limit of 24 hours. This white LED signals that the plant needs watering.
+The project began as a personal solution for automatically watering a plant when its soil became too dry. It was later expanded into a larger reservoir controller capable of monitoring water depth, controlling motor speed, and routing water across multiple irrigation zones.
 
-If the plant is watered within the 24-hour period and the soil moisture level rises to the acceptable threshold, Microcontroller #1 will send a signal to Microcontroller #2 to:
+## Project Evolution
 
-Turn off the white LED
-Turn on the green LED, indicating that the plant has been sufficiently watered
+### Version 1: Automatic Plant Watering System
 
-However, if the soil moisture level does not reach the required threshold within 24 hours, Microcontroller #1 will signal Microcontroller #2 to:
+The original system used two STM32 microcontrollers to monitor soil moisture and control a water pump.
 
-Turn off the white LED
-Turn on the red LED to indicate that the water pump has been activated
+Microcontroller 1 continuously read data from a resistive soil-moisture sensor. When the moisture level dropped below a predefined threshold, it notified Microcontroller 2 that the plant required water.
 
-Once the correct soil moisture level is reached, Microcontroller #1 will signal Microcontroller #2 to:
-Turn off the red LED
-Turn on the green LED, indicating that the irrigation is complete and the soil has the correct moisture level.
+The system used three status indicators:
 
-<img width="805" height="602" alt="image" src="https://github.com/user-attachments/assets/1ed33df2-f72a-471e-86c9-f136ec28d8a1" />
+- **White LED:** The soil is dry and the user has up to 24 hours to water the plant manually.
+- **Red LED:** The plant was not watered within 24 hours, so the automatic pump was activated.
+- **Green LED:** The soil reached the desired moisture level and watering was complete.
 
-Soil Moisture Sensor demo: [https://drive.google.com/drive/u/0/folders/15HXPNm_AyePa2Xh2LSpp277RnzQLPPi2](url)
+The two controllers initially communicated using UART. After experiencing missed and unreliable messages, the communication system was redesigned using SPI, providing a shared clock and more reliable data transfer.
 
-Water pump demo: [https://drive.google.com/drive/u/0/folders/15HXPNm_AyePa2Xh2LSpp277RnzQLPPi2](url)
+## Version 2: Water Reservoir Irrigation Controller
 
+The system was later expanded from managing one plant to controlling a reservoir-based irrigation system with one inlet and three irrigation zones.
 
+Each zone is located at a different elevation and therefore requires a different pump speed and water pressure.
+
+The upgraded system includes:
+
+- Ultrasonic water-depth sensing
+- DC motor and pump control using PWM
+- Manual motor-speed control using a potentiometer
+- Motor RPM measurement using an optical speed sensor
+- Servo-controlled water routing
+- Three irrigation zones and one reservoir inlet
+- RGB LED status indicators
+- Dual seven-segment water-level display
+- UART terminal interface
+- Setup and run operating modes
+- Accelerated simulation of a 24-hour irrigation schedule
+- Automatic shutdown when the reservoir becomes empty
+- Energy-consumption and operating-cost calculations
+
+## System Operation
+
+The controller first fills the reservoir through the inlet connection. Once the required water level is reached, it directs water to each irrigation zone according to the configured schedule.
+
+For each connection, the system:
+
+1. Positions the servo toward the selected pipe.
+2. Sets the RGB LED to the corresponding zone colour.
+3. Configures the motor speed using PWM.
+4. Measures the motor's actual RPM.
+5. Monitors the reservoir water level.
+6. Reports system data through the terminal and seven-segment display.
+
+If the reservoir reaches zero water depth during operation, the controller immediately turns off the motor, flashes the RGB LED white, reports the error, and waits for a system reset.
+
+## Hardware
+
+- STM32 Nucleo microcontroller
+- Resistive soil-moisture sensor
+- Ultrasonic distance sensor
+- DC motor and water pump
+- L9110 motor driver
+- Optical RPM sensor and encoder wheel
+- Servo motor
+- Potentiometer
+- RGB LEDs
+- Dual seven-segment display
+- Push buttons
+- UART terminal connection
+
+## Embedded Concepts Used
+
+- Analog-to-digital conversion
+- PWM motor control
+- SPI communication
+- UART communication
+- Hardware timers
+- Interrupt-based RPM measurement
+- GPIO control
+- Sensor calibration
+- Finite-state system operation
+- Fault detection and automatic shutdown
+
+## What I Learned
+
+This project taught me how to move from a small prototype to a system containing multiple sensors, actuators, interfaces, and safety conditions.
+
+The most important lesson was learning when to change an approach rather than continuing to patch it. Replacing unreliable UART communication with SPI made the original system dependable, while the expanded reservoir controller taught me how several embedded subsystems must coordinate in real time.
