@@ -1,6 +1,11 @@
 # STM32 Smart Irrigation and Reservoir Control System
 
-An embedded irrigation system built with STM32 microcontrollers to monitor water conditions, control a pump, and automate water distribution.
+An embedded irrigation system built with STM32 microcontrollers to monitor water conditions, control a pump, and automate water distribution.\<img width="805" height="602" alt="image" src="https://github.com/user-attachments/assets/1ed33df2-f72a-471e-86c9-f136ec28d8a1" />
+
+Soil Moisture Sensor demo: [https://drive.google.com/drive/u/0/folders/15HXPNm_AyePa2Xh2LSpp277RnzQLPPi2](url)
+
+Water pump demo: [https://drive.google.com/drive/u/0/folders/15HXPNm_AyePa2Xh2LSpp277RnzQLPPi2](url)
+
 
 The project began as a personal solution for automatically watering a plant when its soil became too dry. It was later expanded into a larger reservoir controller capable of monitoring water depth, controlling motor speed, and routing water across multiple irrigation zones.
 
